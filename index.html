@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ru">
+<head>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title>Мебельная фирма Kardinal</title>
+ <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+ <header class="topbar">
+  <div class="brand">
+   <div class="logo">K</div>
+   <div>
+    <div class="brand-title">Мебельная фирма Kardinal</div>
+    </div>
+  </div>
+
+  <div class="stats" id="stats">
+   <div class="stat">
+    <div class="stat-label">Стена</div>
+    <div class="stat-value" id="statWall">3000 мм</div>
+   </div>
+   <div class="stat">
+    <div class="stat-label">Занято</div>
+    <div class="stat-value" id="statUsed">0 мм</div>
+   </div>
+   <div class="stat">
+    <div class="stat-label">Свободно</div>
+    <div class="stat-value" id="statFree">3000 мм</div>
+   </div>
+      <div class="stat">
+        <div class="stat-label">Столешница</div>
+        <div class="stat-value" id="statTop">0.00 м²</div>
+      </div>
+  </div>
+ </header>
+
+ <main class="layout">
+  <section class="stage">
+   <div class="stage-head">
+    <div>
+     <h2>Визуализация</h2>
+     <div class="stage-sub">2D канвас • фасады/ручки/тени • масштаб по длине стены</div>
+    </div>
+    <div class="toggles">
+     <label class="toggle">
+      <input type="checkbox" id="toggleGrid" checked />
+      <span>Сетка</span>
+     </label>
+     <label class="toggle">
+      <input type="checkbox" id="toggleLabels" checked />
+      <span>Подписи</span>
+     </label>
+     <label class="toggle">
+      <input type="checkbox" id="toggleShadow" checked />
+      <span>Тени</span>
+     </label>
+    </div>
+   </div>
+
+   <div class="canvas-wrap">
+    <canvas id="canvas"></canvas>
+   </div>
+
+   <div class="stage-foot">
+    <div class="chip">Добавляйте модули и перетаскивайте их мышью → они примагничиваются и меняют порядок</div>
+    <div class="chip subtle">Поддержка углового модуля (как блок 900×900)</div>
+   </div>
+  </section>
+<aside class="panel">
+   <section class="card">
+    <h2>Параметры</h2>
+
+    <label class="field">
+      <span>Длина стены (мм)</span>
+      <input id="wallInput" type="number" min="1200" step="100" value="3000" />
+    </label>
+
+    <div class="divider"></div>
+
+    <label class="field">
+     <span>Модуль</span>
+     <select id="moduleSelect"></select>
+    </label>
+<button id="addBtn" class="btn primary">Добавить модуль</button>
+
+    <div class="row">
+     <button id="undoBtn" class="btn">Удалить последний</button>
+     <button id="clearBtn" class="btn danger">Очистить</button>
+    </div>
+
+    <p class="hint" id="hint"></p>
+   </section>
+
+   <section class="card">
+    <h2>Комплектация</h2>
+    <div class="bom" id="bom"></div>
+</section>
+
+   
+   <section class="card">
+    <h2>PDF (КП)</h2>
+
+    <label class="field">
+     <span>Клиент (ФИО)</span>
+     <input id="clientName" type="text" placeholder="Например: Иван Иванов" />
+    </label>
+
+    <label class="field">
+     <span>Телефон</span>
+     <input id="clientPhone" type="text" placeholder="+7 (___) ___-__-__" />
+    </label>
+
+    <label class="field">
+     <span>Комментарий</span>
+     <input id="clientNote" type="text" placeholder="Например: кухня в квартиру, срочно" />
+    </label>
+
+    <button id="pdfBtn" class="btn primary">Сохранить как PDF</button>
+    <p class="hint" style="margin-top:10px">
+     Откроется окно печати — выберите принтер <b>Save as PDF</b> / <b>Сохранить в PDF</b>.
+    </p>
+   </section>
+</aside>
+ </main>
+
+ <footer class="footer">
+  <div>Мебельная фирма Kardinal • Конструктор модульной кухни</div>
+  <div class="muted">Файлы: index.html, style.css, app.js</div>
+ </footer>
+
+
+ <!-- PRINT / PDF TEMPLATE (shown only when printing) -->
+ <div class="print" id="printArea" aria-hidden="true">
+  <div class="print-header">
+   <div class="print-brand">
+    <div class="print-logo">K</div>
+    <div>
+     <div class="print-title"></div>
+     <div class="print-sub">Мебельная фирма Kardinal </div>
+    </div>
+   </div>
+   <div class="print-meta">
+    <div><span>Дата:</span> <b id="printDate"></b></div>
+    <div><span>Клиент:</span> <b id="printClient"></b></div>
+    <div><span>Телефон:</span> <b id="printPhone"></b></div>
+   </div>
+  </div>
+
+  <div class="print-grid">
+   <div class="print-block">
+    <div class="print-block-title">Визуализация</div>
+    <img id="printImage" alt="Проект кухни" />
+   </div>
+
+   <div class="print-block">
+    <div class="print-block-title">Параметры</div>
+    <div class="print-kv">
+     <div><span>Длина стены:</span> <b id="printWall"></b></div>
+     <div><span>Занято:</span> <b id="printUsed"></b></div>
+     <div><span>Свободно:</span> <b id="printFree"></b></div>
+     <div><span>Столешница:</span> <b id="printTop"></b></div>
+          <div><span>Комментарий:</span> <b id="printNote"></b></div>
+    </div>
+
+    <div class="print-block-title" style="margin-top:14px">Комплектация</div>
+    <div id="printBOM"></div>
+
+    <div class="print-footnote">
+     Примечание: это версия. Итоговая стоимость и деталировка могут уточняться после замера/проекта.
+    </div>
+   </div>
+  </div>
+ </div>
+
+ <script src="app.js"></script>
+
+<div class="mobile-bar">
+  <button id="mbAdd" class="mb-btn primary">＋</button>
+  <button id="mbUndo" class="mb-btn">↶</button>
+  <button id="mbClear" class="mb-btn danger">✕</button>
+  <button id="mbPdf" class="mb-btn">PDF</button>
+</div>
+</body>
+
+</html>
